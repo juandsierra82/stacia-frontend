@@ -1,17 +1,18 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import ProjectDetails from './ProjectDetails';
+import { PROJECTS } from './mocks';
 
 function Project() {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    <Card>
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{PROJECTS[0].name}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {PROJECTS[0].description}
+          <ProjectDetails />
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary">Edit Project</Button>
       </Card.Body>
     </Card>
   );
