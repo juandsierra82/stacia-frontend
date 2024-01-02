@@ -1,5 +1,4 @@
-import './App.scss';
-import Project from './Project';
+import ProjectCard from './ProjectCard';
 
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -10,7 +9,7 @@ function App() {
     <Container>
       <Row>
         <Col>
-          <Project />
+          <ProjectCard />
         </Col>
       </Row>
     </Container>

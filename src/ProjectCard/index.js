@@ -1,7 +1,8 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import ProjectDetails from './ProjectDetails';
+import ProjectCardDetails from './ProjectCardDetails';
 import { PROJECTS } from './mocks';
+import { Link } from 'react-router-dom';
 
 function Project() {
   return (
@@ -10,9 +11,11 @@ function Project() {
         <Card.Title>{PROJECTS[0].name}</Card.Title>
         <Card.Text>
           {PROJECTS[0].description}
-          <ProjectDetails />
+          <ProjectCardDetails />
         </Card.Text>
-        <Button variant="primary">Edit Project</Button>
+        <Button href="/project/foo" variant="primary">
+          Edit Project
+        </Button>
       </Card.Body>
     </Card>
   );
