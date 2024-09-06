@@ -1,18 +1,25 @@
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Badge from 'react-bootstrap/Badge';
 import { useParams } from 'react-router-dom';
 const TaskCard = () => {
-  const { taskId } = useParams();
+  const { taskId, projectId } = useParams();
 
   return (
     <Card>
-      <Card.Header>Featured {taskId}</Card.Header>
+      <Card.Header>
+        Project {projectId} Task {taskId}
+      </Card.Header>
       <Card.Body>
-        <Card.Title>Special title treatment</Card.Title>
-        <Card.Text>
-          With supporting text below as a natural lead-in to additional content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Card.Title>
+          Finish 50 Year <Badge bg="secondary">Status: New</Badge>
+        </Card.Title>
+        <Card.Text>This is the description of what needs to happen</Card.Text>
+        <Button variant="danger" disabled>
+          Undo
+        </Button>
+        <Button variant="primary">Start</Button>
+        <Button variant="success">Complete</Button>
       </Card.Body>
     </Card>
   );

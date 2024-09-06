@@ -12,7 +12,7 @@ function ProjectDetails() {
         <div className="ms-2 me-auto">
           <div className="fw-bold"> Next Task: {PROJECT_TASKS[0].name} </div>
           <ul>
-            <li>Last Touched by {PROJECT_TASKS[0].touchedBy}</li>
+            <li>Updated by {PROJECT_TASKS[0].touchedBy}</li>
             <li>Status: {PROJECT_TASKS[0].status}</li>
           </ul>
         </div>

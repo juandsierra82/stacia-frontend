@@ -6,6 +6,8 @@ import TasksPage from '../TasksPage';
 import BudgetPage from '../BudgetPage';
 import VendorsPage from '../VendorsPage';
 import TaskCard from '../TaskCard';
+import VendorCard from '../VendorCard';
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -34,6 +36,12 @@ const router = createBrowserRouter([
       {
         path: 'vendors',
         element: <VendorsPage />,
+        children: [
+          {
+            path: ':vendorId',
+            element: <VendorCard />,
+          },
+        ],
       },
       {
         path: 'budget',
