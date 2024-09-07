@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
+import { useQuery } from '@apollo/client';
 import Card from 'react-bootstrap/Card';
+import { GET_BUILDINGS } from './queries';
 
 const HomePage = () => {
   const [building] = useState(false);
+  const { loading, error, data } = useQuery(GET_BUILDINGS);
+
   if (building) {
     return (
       <div>
