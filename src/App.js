@@ -1,15 +1,24 @@
+import React, { useState } from 'react';
 import Navigation from './Navigation';
 import Container from 'react-bootstrap/Container';
-import { Outlet } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
-function App(props) {
+import { Pencil } from 'react-bootstrap-icons';
+
+function App() {
   return (
     <Container>
       <Row>
         <Col>
-          <h1>Welcome to the Royal Palm Villas Portal</h1>
+          <h1>
+            Welcome to the Royal Palm Villas Portal{' '}
+            <Button variant="outline-primary" as={Link} to={'/building/edit'}>
+              Edit Building Details <Pencil />
+            </Button>
+          </h1>
           <Navigation />
           <Outlet />
         </Col>

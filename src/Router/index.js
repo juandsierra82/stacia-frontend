@@ -11,6 +11,7 @@ import VendorCard from '../VendorCard';
 import ProjectCard from '../ProjectCard';
 import Owners from '../OwnersPage';
 import Owner from '../OwnersPage/OwnerCard';
+import BuildingForm from '../BuildingForm';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,11 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <HomePage />,
+        errorElement: <ErrorPage />,
+      },
+      {
+        element: <BuildingForm />,
+        path: '/building/edit',
         errorElement: <ErrorPage />,
       },
       {
