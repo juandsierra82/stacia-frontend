@@ -1,8 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Button, Form } from 'react-bootstrap';
+import { GET_BUILDINGS } from '../HomePage/queries';
+import { UPSERT_BUILDING } from './queries';
+import { useQuery, useMutation } from '@apollo/client';
 
 const BuildingForm = () => {
   const [building, setBuilding] = useState({});
+  const { loading, error, data } = useQuery(GET_BUILDINGS);
+  const [upsertBuilding, { data: upsertedBuilding }] =
+    useMutation(UPSERT_BUILDING);
+  useEffect(() => {
+    if (data && data.buildings && data.buildings.length) {
+      setBuilding(data.buildings[0]);
+    }
+  }, [data]);
+  if (loading) return null;
+  if (error) return `Error! ${error}`;
   return (
     <Card className="form-card">
       <Form>
@@ -102,7 +115,29 @@ const BuildingForm = () => {
             }}
           />
         </Form.Group>
-        <Button className="submit-form" type="submit">
+        <Button
+          className="submit-form"
+          onClick={async (e) => {
+            e.preventDefault();
+            const variables = {};
+            const { id, address1 } = building;
+            if (building.id) {
+              variables.where = {
+                id: building.id,
+                address1: building.address1,
+              };
+              variables.update = building;
+            } else {
+              variables.update = building;
+              variables.where = { id, address1 };
+              variables.create = building;
+            }
+            const updatedBuilding = await upsertBuilding({
+              variables,
+            });
+            await setBuilding(updatedBuilding.data);
+          }}
+        >
           Submit
         </Button>
       </Form>

@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import Card from 'react-bootstrap/Card';
 import { GET_BUILDINGS } from './queries';
 
 const HomePage = () => {
-  const [building] = useState(false);
-  const { loading, error, data } = useQuery(GET_BUILDINGS);
+  const [building, setBuildingState] = useState(false);
 
+  const { loading, error, data } = useQuery(GET_BUILDINGS);
+  useEffect(() => {
+    if (data && data.buildings.length) {
+      setBuildingState(data.buildings[0]);
+    }
+  }, [data, data.buildings]);
+  if (loading) return null;
+  if (error) return `Error! ${error}`;
   if (building) {
     return (
       <div>
