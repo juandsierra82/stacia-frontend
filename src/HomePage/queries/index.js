@@ -4,8 +4,6 @@ const GET_BUILDINGS = gql`
   query getBuildings {
     buildings {
       id
-      createdAt
-      updatedAt
       name
       dateFounded
       address1
@@ -14,6 +12,10 @@ const GET_BUILDINGS = gql`
       municipality
       country
       postalCode
+      units {
+        id
+        address
+      }
     }
   }
 `;

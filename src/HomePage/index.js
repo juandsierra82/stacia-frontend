@@ -11,7 +11,7 @@ const HomePage = () => {
     if (data && data.buildings.length) {
       setBuildingState(data.buildings[0]);
     }
-  }, [data, data.buildings]);
+  }, [data]);
   if (loading) return null;
   if (error) return `Error! ${error}`;
   if (building) {

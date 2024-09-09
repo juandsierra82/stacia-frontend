@@ -9,20 +9,6 @@ import Button from 'react-bootstrap/Button';
 import { Pencil } from 'react-bootstrap-icons';
 
 function App() {
-  // client
-  //   .query({
-  //     query: gql`
-  //       query GetLocations {
-  //         locations {
-  //           id
-  //           name
-  //           description
-  //           photo
-  //         }
-  //       }
-  //     `,
-  //   })
-  //   .then((result) => console.log(result));
   return (
     <Container>
       <Row>

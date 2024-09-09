@@ -8,8 +8,6 @@ const UPSERT_BUILDING = gql`
   ) {
     upsertBuilding(create: $create, where: $where, update: $update) {
       id
-      createdAt
-      updatedAt
       name
       address1
       address2
