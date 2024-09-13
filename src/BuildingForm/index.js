@@ -3,10 +3,12 @@ import { Card, Col, Row, Button, Form, InputGroup } from 'react-bootstrap';
 import { GET_BUILDINGS } from '../HomePage/queries';
 import { UPSERT_BUILDING } from './queries';
 import { useQuery, useMutation } from '@apollo/client';
-import { Trash, PlusCircle } from 'react-bootstrap-icons';
+import { useNavigate } from 'react-router-dom';
+import { Trash, PlusCircle, BoxArrowRight } from 'react-bootstrap-icons';
 import { buildQueryVariables } from './utils';
 
 const BuildingForm = () => {
+  const navigate = useNavigate();
   const [building, setBuilding] = useState({});
   const [units, setUnits] = useState([]);
   const [currentUnit, setCurrentUnit] = useState(null);
@@ -174,7 +176,7 @@ const BuildingForm = () => {
                       ? !!units.find(
                           ({ address }) => address === currentUnit.address
                         )
-                      : false
+                      : true
                   }
                   variant="outline-secondary"
                   title="Click to add unit to building"
@@ -203,7 +205,7 @@ const BuildingForm = () => {
                 />
                 {units
                   .filter(({ deleted }, idx) => !deleted)
-                  .map(({ address, deleted }, idx) => {
+                  .map(({ id, address, deleted }, idx) => {
                     return (
                       <InputGroup key={`input-group-${address}-${deleted}`}>
                         <Button
@@ -229,6 +231,20 @@ const BuildingForm = () => {
                           value={address}
                           readOnly
                         />
+                        {id && (
+                          <Button
+                            key={`link-to-unit-${id}`}
+                            variant="outline-primary"
+                            title={`Go to unit ${address}`}
+                            onClick={() => {
+                              navigate(`../../units/${id}`, {
+                                relative: 'path',
+                              });
+                            }}
+                          >
+                            <BoxArrowRight />
+                          </Button>
+                        )}
                       </InputGroup>
                     );
                   })}
