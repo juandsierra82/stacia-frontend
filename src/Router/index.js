@@ -25,7 +25,7 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
       },
       {
-        element: <BuildingForm />,
+        element: <BuildingForm id="building-form" />,
         path: '/building/edit',
         errorElement: <ErrorPage />,
       },

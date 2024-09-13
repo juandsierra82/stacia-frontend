@@ -17,6 +17,10 @@ const UPSERT_BUILDING = gql`
       postalCode
       country
       description
+      units {
+        id
+        address
+      }
     }
   }
 `;

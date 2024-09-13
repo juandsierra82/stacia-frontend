@@ -13,6 +13,7 @@ const BuildingForm = () => {
   const [validated, setValidated] = useState(false);
   const { loading, error, data } = useQuery(GET_BUILDINGS);
   const [upsertBuilding] = useMutation(UPSERT_BUILDING);
+  const [isDirty, setIsDirty] = useState(false);
   useEffect(() => {
     if (data && data.buildings && data.buildings.length) {
       const building = data.buildings[0];
@@ -20,10 +21,27 @@ const BuildingForm = () => {
       setUnits(building.units || []);
     }
   }, [data]);
+  useEffect(() => {
+    if (data && data.buildings) {
+      let buildingData = data.buildings[0];
+      const oldBuilding = JSON.stringify(data.buildings[0]);
+      const newBuilding = JSON.stringify(building);
+      const newUnits = JSON.stringify(
+        units.filter(({ deleted }) => !deleted).map(({ address }) => address)
+      );
+      const oldUnits = JSON.stringify(
+        buildingData.units.map(({ address }) => address)
+      );
+      const buildingChanged = oldBuilding !== newBuilding;
+      const unitsChanged = oldUnits !== newUnits;
+      setIsDirty(buildingChanged || unitsChanged);
+    }
+  }, [data, building, units]);
   if (loading) return null;
   if (error) return `Error! ${error}`;
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
+    if (!isDirty) return;
     e.preventDefault();
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -31,10 +49,14 @@ const BuildingForm = () => {
       return;
     }
     const variables = buildQueryVariables(building, units);
-    const updatedBuilding = await upsertBuilding({
+    await upsertBuilding({
       variables,
+      update: (cache, { data: { upsertBuilding } }) => {
+        const data = cache.readQuery({ query: GET_BUILDINGS });
+        data.buildings[0] = upsertBuilding;
+        cache.writeQuery({ query: GET_BUILDINGS }, data);
+      },
     });
-    await setBuilding(updatedBuilding.data);
   };
   return (
     <Card className="form-card">
@@ -43,7 +65,7 @@ const BuildingForm = () => {
           <Form.Group className="mb-3">
             <Form.Control
               required
-              id="buildingName"
+              key="buildingName"
               placeholder="Building Name"
               value={building.name}
               onChange={(e) => {
@@ -58,7 +80,7 @@ const BuildingForm = () => {
         <Form.Group className="multi-line-form">
           <Form.Control
             required
-            id="buildingAddress1"
+            key="buildingAddress1"
             placeholder="Building Address Line 1"
             value={building.address1}
             onChange={(e) => {
@@ -69,7 +91,7 @@ const BuildingForm = () => {
             }}
           />
           <Form.Control
-            id="buildingAddress2"
+            key="buildingAddress2"
             placeholder="Building Address Line 2"
             value={building.address2}
             onChange={(e) => {
@@ -84,7 +106,7 @@ const BuildingForm = () => {
               <Col>
                 <Form.Control
                   required
-                  id="buildingCity"
+                  key="buildingCity"
                   placeholder="city"
                   value={building.city}
                   onChange={(e) => {
@@ -98,7 +120,7 @@ const BuildingForm = () => {
               <Col>
                 <Form.Control
                   required
-                  id="buildingState"
+                  key="buildingState"
                   placeholder="state"
                   value={building.municipality}
                   onChange={(e) => {
@@ -112,7 +134,7 @@ const BuildingForm = () => {
               <Col>
                 <Form.Control
                   required
-                  id="buildingZip"
+                  key="buildingZip"
                   placeholder="zipCode"
                   value={building.postalCode}
                   onChange={(e) => {
@@ -128,7 +150,7 @@ const BuildingForm = () => {
         </Form.Group>
         <Form.Group className="form-textarea">
           <Form.Control
-            id="formDescription"
+            key="formDescription"
             placeholder="Short Building Description"
             as="textarea"
             value={building.description}
@@ -147,45 +169,61 @@ const BuildingForm = () => {
               <Form.Label>Building Units</Form.Label>
               <InputGroup>
                 <Button
+                  disabled={
+                    currentUnit
+                      ? !!units.find(
+                          ({ address }) => address === currentUnit.address
+                        )
+                      : false
+                  }
                   variant="outline-secondary"
                   title="Click to add unit to building"
                   onClick={async (e) => {
                     if (currentUnit && currentUnit.address)
                       await setUnits([...units, currentUnit]);
-                    await setCurrentUnit(null);
+                    await setCurrentUnit('');
                   }}
                 >
                   <PlusCircle />
                 </Button>
                 <Form.Control
-                  id="addUnit"
+                  key="addUnit"
                   placeholder="Add Unit to building"
                   value={currentUnit ? currentUnit.address : ''}
                   onChange={async (e) => {
                     const {
                       target: { value: address },
                     } = e;
-                    if (address) await setCurrentUnit({ address });
+                    if (address) {
+                      await setCurrentUnit({ address });
+                    } else {
+                      await setCurrentUnit('');
+                    }
                   }}
                 />
                 {units
-                  .filter(({ deleted }) => !deleted)
+                  .filter(({ deleted }, idx) => !deleted)
                   .map(({ address, deleted }, idx) => {
                     return (
-                      <InputGroup id={`input-group-${address}-${deleted}`}>
+                      <InputGroup key={`input-group-${address}-${deleted}`}>
                         <Button
-                          id={`delete-${address}`}
+                          key={`delete-button-${address}`}
                           disabled={deleted}
                           variant="outline-secondary"
-                          onClick={async (e) => {
-                            units[idx].deleted = true;
-                            setUnits([...units]);
+                          onClick={() => {
+                            const newUnits = units.map((u) => {
+                              if (u.address === address) {
+                                u.deleted = true;
+                              }
+                              return u;
+                            });
+                            setUnits([...newUnits]);
                           }}
                         >
                           <Trash />
                         </Button>
                         <Form.Control
-                          id={`input-${address}`}
+                          key={`delete-input-${address}`}
                           disabled
                           placeholder="Remove Unit"
                           value={address}
@@ -198,7 +236,7 @@ const BuildingForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Button className="submit-form" type="submit">
+        <Button className="submit-form" type="submit" disabled={!isDirty}>
           Submit
         </Button>
       </Form>

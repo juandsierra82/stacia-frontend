@@ -12,6 +12,7 @@ const GET_BUILDINGS = gql`
       municipality
       country
       postalCode
+      description
       units {
         id
         address
