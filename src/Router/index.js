@@ -12,6 +12,8 @@ import ProjectCard from '../ProjectCard';
 import Owners from '../OwnersPage';
 import Owner from '../OwnersPage/OwnerCard';
 import BuildingForm from '../BuildingForm';
+import UnitPage from '../UnitPage';
+import FeeDetails from '../UnitPage/Fees/FeeDetailsCard';
 
 const router = createBrowserRouter([
   {
@@ -20,12 +22,24 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       {
+        element: <UnitPage />,
+        errorElement: <ErrorPage />,
+        path: 'units/:unitAddress',
+        children: [
+          {
+            element: <FeeDetails />,
+            errorElement: <ErrorPage />,
+            path: 'fees/:feeId',
+          },
+        ],
+      },
+      {
         index: true,
         element: <HomePage />,
         errorElement: <ErrorPage />,
       },
       {
-        element: <BuildingForm id="building-form" />,
+        element: <BuildingForm />,
         path: '/building/edit',
         errorElement: <ErrorPage />,
       },

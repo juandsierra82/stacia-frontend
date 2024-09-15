@@ -17,6 +17,11 @@ const BuildingForm = () => {
   const [upsertBuilding] = useMutation(UPSERT_BUILDING);
   const [isDirty, setIsDirty] = useState(false);
   useEffect(() => {
+    if (data && data.buildings && data.buildings.length === 0 && validated) {
+      setIsDirty(true);
+    }
+  }, [data, validated]);
+  useEffect(() => {
     if (data && data.buildings && data.buildings.length) {
       const building = data.buildings[0];
       setBuilding(building);
@@ -24,7 +29,7 @@ const BuildingForm = () => {
     }
   }, [data]);
   useEffect(() => {
-    if (data && data.buildings) {
+    if (data && data.buildings && data.buildings.length) {
       let buildingData = data.buildings[0];
       const oldBuilding = JSON.stringify(data.buildings[0]);
       const newBuilding = JSON.stringify(building);
@@ -174,7 +179,8 @@ const BuildingForm = () => {
                   disabled={
                     currentUnit
                       ? !!units.find(
-                          ({ address }) => address === currentUnit.address
+                          ({ address, deleted }) =>
+                            address === currentUnit.address && !deleted
                         )
                       : true
                   }
@@ -237,7 +243,7 @@ const BuildingForm = () => {
                             variant="outline-primary"
                             title={`Go to unit ${address}`}
                             onClick={() => {
-                              navigate(`../../units/${id}`, {
+                              navigate(`../../units/${address}`, {
                                 relative: 'path',
                               });
                             }}
