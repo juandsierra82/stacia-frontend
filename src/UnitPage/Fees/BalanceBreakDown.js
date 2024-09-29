@@ -21,7 +21,12 @@ const BalanceBreakDown = () => {
                   to={`./fees/1`}
                   active={'1' === feeId}
                 >
-                  July 2024 Maintainence Fee
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">June 2024 Maintainence</div>
+                    <Row>
+                      <Col>Amount Owed: $0</Col> <Col>AutoPay: On</Col>
+                    </Row>
+                  </div>
                 </ListGroup.Item>
                 <ListGroup.Item
                   as={Link}
@@ -29,7 +34,25 @@ const BalanceBreakDown = () => {
                   to={`./fees/2`}
                   active={'2' === feeId}
                 >
-                  August 2024 Maintainence Fee
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">July 2024 Maintainence</div>
+                    <Row>
+                      <Col>Owed: $500</Col> <Col>AutoPay: On</Col>
+                    </Row>
+                  </div>
+                </ListGroup.Item>
+                <ListGroup.Item
+                  as={Link}
+                  action
+                  to={`./fees/3`}
+                  active={'3' === feeId}
+                >
+                  <div className="ms-2 me-auto">
+                    <div className="fw-bold">August 2024 Maintainence</div>
+                    <Row>
+                      <Col>Owed: $50000</Col> <Col>AutoPay: Off</Col>
+                    </Row>
+                  </div>
                 </ListGroup.Item>
               </ListGroup>
             </Col>

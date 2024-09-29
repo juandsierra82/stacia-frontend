@@ -48,7 +48,7 @@ const BuildingForm = () => {
   if (error) return `Error! ${error}`;
   const handleSubmit = async (e) => {
     const form = e.currentTarget;
-    if (!isDirty) return;
+    if (!isDirty && building.id) return;
     e.preventDefault();
     if (form.checkValidity() === false) {
       e.stopPropagation();
@@ -258,7 +258,11 @@ const BuildingForm = () => {
             </Form.Group>
           </Col>
         </Row>
-        <Button className="submit-form" type="submit" disabled={!isDirty}>
+        <Button
+          className="submit-form"
+          type="submit"
+          disabled={!isDirty && building.id}
+        >
           Submit
         </Button>
       </Form>

@@ -11,8 +11,8 @@ const Navigation = () => {
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>
-          <Nav.Link href="/owners/1" disabled>
-            My Dashboard
+          <Nav.Link as={Link} to="/units/304">
+            My Unit
           </Nav.Link>
         </Nav.Item>
         <Nav.Item>

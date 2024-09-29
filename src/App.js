@@ -16,7 +16,8 @@ function App() {
           <h1>
             Welcome to the Royal Palm Villas Portal{' '}
             <Button variant="outline-primary" as={Link} to={'/building/edit'}>
-              Edit Building Details <Pencil />
+              Edit Building Details{' '}
+              <Pencil style={{ paddingBottom: '3px', marginLeft: '5px' }} />
             </Button>
           </h1>
           <Navigation />
