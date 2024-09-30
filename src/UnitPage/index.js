@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, Row, Col, Button } from 'react-bootstrap';
-import { Person, Pencil } from 'react-bootstrap-icons';
+import { Pencil } from 'react-bootstrap-icons';
+import UnitOwnerInfo from './UnitOwnerInfo';
 
 import BalanceBreakDown from './Fees/BalanceBreakDown';
 
@@ -14,19 +15,7 @@ const UnitPage = () => {
         <Card.Text>
           <Row>
             <Col>
-              <p>
-                <div>Unit Size as building percent: 6%</div>
-                <div>Owner Name(s): Juan Sierra</div>
-                <div>Resident Name(s): Juan Sierra</div>
-              </p>
-              <div>
-                <Button variant="outline-primary" size="sm">
-                  <Person
-                    style={{ paddingBottom: '2px', marginRight: '5px' }}
-                  />
-                  <span>Edit Owner/Resident Info</span>
-                </Button>
-              </div>
+              <UnitOwnerInfo />
             </Col>
             <Col>
               <p>
